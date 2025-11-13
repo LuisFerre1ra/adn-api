@@ -32,8 +32,8 @@ class StatsServiceTest {
         StatsResponse stats = statsService.getStats();
 
         // ASSERT
-        assertEquals(40, stats.countMutantDna());
-        assertEquals(100, stats.countHumanDna());
+        assertEquals(40, stats.count_mutant_dna());
+        assertEquals(100, stats.count_human_dna());
         assertEquals(0.4, stats.ratio(), 0.001);  // 40/100 = 0.4
     }
 
@@ -45,8 +45,8 @@ class StatsServiceTest {
 
         StatsResponse stats = statsService.getStats();
 
-        assertEquals(10, stats.countMutantDna());
-        assertEquals(0, stats.countHumanDna());
+        assertEquals(10, stats.count_mutant_dna());
+        assertEquals(0, stats.count_human_dna());
         assertEquals(1.0, stats.ratio(), 0.001);  // Evita división por cero
     }
 
@@ -58,8 +58,8 @@ class StatsServiceTest {
 
         StatsResponse stats = statsService.getStats();
 
-        assertEquals(0, stats.countMutantDna());
-        assertEquals(0, stats.countHumanDna());
+        assertEquals(0, stats.count_mutant_dna());
+        assertEquals(0, stats.count_human_dna());
         assertEquals(0.0, stats.ratio(), 0.001);
     }
 
@@ -71,8 +71,8 @@ class StatsServiceTest {
 
         StatsResponse stats = statsService.getStats();
 
-        assertEquals(1, stats.countMutantDna());
-        assertEquals(3, stats.countHumanDna());
+        assertEquals(1, stats.count_mutant_dna());
+        assertEquals(3, stats.count_human_dna());
         assertEquals(0.333, stats.ratio(), 0.001);  // 1/3 ≈ 0.333
     }
 
@@ -84,8 +84,8 @@ class StatsServiceTest {
 
         StatsResponse stats = statsService.getStats();
 
-        assertEquals(50, stats.countMutantDna());
-        assertEquals(50, stats.countHumanDna());
+        assertEquals(50, stats.count_mutant_dna());
+        assertEquals(50, stats.count_human_dna());
         assertEquals(1.0, stats.ratio(), 0.001);
     }
 
@@ -97,8 +97,8 @@ class StatsServiceTest {
 
         StatsResponse stats = statsService.getStats();
 
-        assertEquals(1_000_000, stats.countMutantDna());
-        assertEquals(2_000_000, stats.countHumanDna());
+        assertEquals(1_000_000, stats.count_mutant_dna());
+        assertEquals(2_000_000, stats.count_human_dna());
         assertEquals(0.5, stats.ratio(), 0.001);  // 1M / 2M = 0.5
     }
 }

@@ -41,8 +41,8 @@ public class StatsService {
         }
 
         return StatsResponse.builder()
-                .countMutantDna(countMutantDna)
-                .countHumanDna(countHumanDna)
+                .count_mutant_dna(countMutantDna)
+                .count_human_dna(countHumanDna)
                 .ratio(ratio)
                 .build();
     }

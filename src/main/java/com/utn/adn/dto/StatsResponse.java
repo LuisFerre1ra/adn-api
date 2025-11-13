@@ -10,10 +10,10 @@ import lombok.Builder;
 public record StatsResponse(
 
         @Min(value = 0, message = "El número de ADN mutantes no puede ser negativo")
-        long countMutantDna,
+        long count_mutant_dna,
 
         @Min(value = 0, message = "El número de ADN humanos no puede ser negativo")
-        long countHumanDna,
+        long count_human_dna,
 
         @Min(value = 0, message = "El ratio no puede ser negativo")
         double ratio
