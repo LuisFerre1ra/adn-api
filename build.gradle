@@ -15,6 +15,10 @@ java {
 	}
 }
 
+test {
+    outputs.upToDateWhen { false }
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
