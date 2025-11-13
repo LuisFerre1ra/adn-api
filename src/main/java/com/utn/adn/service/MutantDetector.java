@@ -1,5 +1,6 @@
 package com.utn.adn.service;
 
+import com.utn.adn.validation.ValidDnaSequenceValidator;
 import org.springframework.stereotype.Service;
 
 /**
