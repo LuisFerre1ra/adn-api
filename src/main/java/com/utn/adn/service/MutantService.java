@@ -1,6 +1,7 @@
 package com.utn.adn.service;
 
 import com.utn.adn.entity.DnaRecord;
+import com.utn.adn.exception.DnaHashCalculationException;
 import com.utn.adn.repository.DnaRecordRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -81,31 +82,37 @@ public class MutantService {
      * @return string hex de 64 chars (SHA-256)
      */
     private String calculateDnaHash(String[] dna) {
-        if (dna == null) return sha256Hex("null");
+        try {
+            if (dna == null) {
+                return sha256Hex("null");
+            }
 
-        // Concatenar con separador inmutable (por ejemplo '|')
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < dna.length; i++) {
-            if (i > 0) sb.append('|');
-            sb.append(dna[i]);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < dna.length; i++) {
+                if (i > 0) sb.append('|');
+                sb.append(dna[i]);
+            }
+            return sha256Hex(sb.toString());
+
+        } catch (Exception e) {
+            throw new DnaHashCalculationException("Error al calcular hash del ADN", e);
         }
-        return sha256Hex(sb.toString());
     }
 
     private String sha256Hex(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] digest = md.digest(input.getBytes(StandardCharsets.UTF_8));
-            // convertir a hex
+
             StringBuilder hex = new StringBuilder(2 * digest.length);
             for (byte b : digest) {
                 hex.append(String.format("%02x", b));
             }
             return hex.toString();
+
         } catch (NoSuchAlgorithmException e) {
-            // SHA-256 siempre disponible en JVM estándar, pero por si acaso:
-            log.error("SHA-256 algorithm not available", e);
-            throw new IllegalStateException("SHA-256 not available", e);
+            log.error("SHA-256 algorithm no disponible", e);
+            throw new DnaHashCalculationException("Algoritmo SHA-256 no soportado", e);
         }
     }
 }
