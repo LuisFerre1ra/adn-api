@@ -181,26 +181,6 @@ public class MutantDetectorTest {
     }
 
     @Test
-    @DisplayName("Debe usar early termination para eficiencia")
-    void testEarlyTermination() {
-        String[] dna = {
-                "AAAAGA",  // Secuencia 1
-                "AAAAGC",  // Secuencia 2
-                "TTATGT",  // Ya no se revisa (early termination)
-                "AGAAGG",
-                "CCCCTA",
-                "TCACTG"
-        };
-
-        long startTime = System.nanoTime();
-        boolean result = mutantDetector.isMutant(dna);
-        long endTime = System.nanoTime();
-
-        assertTrue(result);
-        assertTrue((endTime - startTime) < 10_000_000); // < 10ms
-    }
-
-    @Test
     @DisplayName("Debe detectar mutante con todas las bases iguales")
     void testAllSameBases() {
         String[] dna = {
@@ -226,5 +206,74 @@ public class MutantDetectorTest {
                 "TCACTG"
         };
         assertFalse(mutantDetector.isMutant(dna));
+    }
+
+    @Test
+    @DisplayName("Debe usar early termination para eficiencia")
+    void testEarlyTermination() {
+        String[] dna = {
+                "AAAAGA",  // Secuencia 1
+                "AAAAGC",  // Secuencia 2
+                "TTATGT",  // Ya no se revisa (early termination)
+                "AGAAGG",
+                "CCCCTA",
+                "TCACTG"
+        };
+
+        long startTime = System.nanoTime();
+        boolean result = mutantDetector.isMutant(dna);
+        long endTime = System.nanoTime();
+
+        assertTrue(result);
+        assertTrue((endTime - startTime) < 10_000_000); // < 10ms
+    }
+
+    private String[] generateMatrix(int size) {
+        String bases = "ATCG";
+        String[] matrix = new String[size];
+        for (int i = 0; i < size; i++) {
+            StringBuilder row = new StringBuilder();
+            for (int j = 0; j < size; j++) {
+                row.append(bases.charAt((int) (Math.random() * 4)));
+            }
+            matrix[i] = row.toString();
+        }
+        return matrix;
+    }
+
+    @Test
+    void performance_6x6() {
+        String[] dna = generateMatrix(6);
+
+        long start = System.nanoTime();
+        mutantDetector.isMutant(dna);
+        long elapsedMs = (System.nanoTime() - start) / 1_000_000;
+
+        assertTrue(elapsedMs <= 5,
+                "Tiempo excedido para 6x6: " + elapsedMs + "ms (máx 5ms)");
+    }
+
+    @Test
+    void performance_100x100() {
+        String[] dna = generateMatrix(100);
+
+        long start = System.nanoTime();
+        mutantDetector.isMutant(dna);
+        long elapsedMs = (System.nanoTime() - start) / 1_000_000;
+
+        assertTrue(elapsedMs <= 100,
+                "Tiempo excedido para 100x100: " + elapsedMs + "ms (máx 100ms)");
+    }
+
+    @Test
+    void performance_1000x1000() {
+        String[] dna = generateMatrix(1000);
+
+        long start = System.nanoTime();
+        mutantDetector.isMutant(dna);
+        long elapsedMs = (System.nanoTime() - start) / 1_000_000;
+
+        assertTrue(elapsedMs <= 5000,
+                "Tiempo excedido para 1000x1000: " + elapsedMs + "ms (máx 5000ms)");
     }
 }
