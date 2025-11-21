@@ -4,8 +4,8 @@ import com.utn.adn.entity.DnaRecord;
 import com.utn.adn.exception.DnaHashCalculationException;
 import com.utn.adn.repository.DnaRecordRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -15,16 +15,11 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MutantService {
 
     private final MutantDetector mutantDetector;
     private final DnaRecordRepository dnaRecordRepository;
-
-    @Autowired
-    public MutantService(MutantDetector md, DnaRecordRepository repo) {
-        mutantDetector = md;
-        dnaRecordRepository = repo;
-    }
 
     /**
      * Analiza el DNA y retorna true si es mutante.
