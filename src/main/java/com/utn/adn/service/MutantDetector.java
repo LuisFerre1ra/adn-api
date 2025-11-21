@@ -1,7 +1,8 @@
 package com.utn.adn.service;
 
-import com.utn.adn.validation.ValidDnaSequenceValidator;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * Clase responsable de analizar el ADN y determinar si pertenece a un mutante.
@@ -13,38 +14,67 @@ public class MutantDetector {
 
     private static final int SEQUENCE_LENGTH = 4;
     private static final int MIN_MUTANT_SEQUENCES = 2;
+    private static final Set<Character> VALID_BASES = Set.of('A', 'T', 'C', 'G');
 
     /**
      * Determina si el ADN pertenece a un mutante.
-     *
-     * @param dna arreglo NxN de cadenas que representan las bases nitrogenadas
-     * @return true si es mutante, false si es humano
-     * @throws IllegalArgumentException si el ADN es nulo, vacío, no cuadrado o contiene caracteres inválidos
+     * Retorna true si encuentra al menos 2 secuencias de 4 caracteres iguales en:
+     *  - Horizontal
+     *  - Vertical
+     *  - Diagonal principal
+     *  - Diagonal inversa
      */
     public boolean isMutant(String[] dna) {
-        if(!validateDna(dna)) return false;
-
-        int n = dna.length;
-        char[][] matrix = new char[n][n];
-
-        // Copiar ADN a matriz
-        for (int i = 0; i < n; i++) {
-            matrix[i] = dna[i].toUpperCase().toCharArray();
+        if (!validateDna(dna)) {
+            return false;
         }
 
-        int found = 0;
+        final int n = dna.length;
+        final char[][] matrix = convertToMatrix(dna, n);
 
-        // Recorrer toda la matriz buscando secuencias
+        int sequencesFound = 0;
+
+        // Recorremos la matriz en un solo loop
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < n; col++) {
-                char base = matrix[row][col];
-                if (isSequence(matrix, row, col, 0, 1, base)) found++;   // derecha
-                if (isSequence(matrix, row, col, 1, 0, base)) found++;   // abajo
-                if (isSequence(matrix, row, col, 1, 1, base)) found++;   // diagonal principal
-                if (isSequence(matrix, row, col, 1, -1, base)) found++;  // antidiagonal
 
-                if (found >= MIN_MUTANT_SEQUENCES)
-                    return true;
+                char base = matrix[row][col];
+
+                // Horizontal
+                if (col <= n - SEQUENCE_LENGTH &&
+                        matrix[row][col + 1] == base &&
+                        matrix[row][col + 2] == base &&
+                        matrix[row][col + 3] == base) {
+
+                    if (++sequencesFound >= MIN_MUTANT_SEQUENCES) return true;
+                }
+
+                // Vertical
+                if (row <= n - SEQUENCE_LENGTH &&
+                        matrix[row + 1][col] == base &&
+                        matrix[row + 2][col] == base &&
+                        matrix[row + 3][col] == base) {
+
+                    if (++sequencesFound >= MIN_MUTANT_SEQUENCES) return true;
+                }
+
+                // Diagonal principal
+                if (row <= n - SEQUENCE_LENGTH && col <= n - SEQUENCE_LENGTH &&
+                        matrix[row + 1][col + 1] == base &&
+                        matrix[row + 2][col + 2] == base &&
+                        matrix[row + 3][col + 3] == base) {
+
+                    if (++sequencesFound >= MIN_MUTANT_SEQUENCES) return true;
+                }
+
+                // Diagonal inversa
+                if (row <= n - SEQUENCE_LENGTH && col >= SEQUENCE_LENGTH - 1 &&
+                        matrix[row + 1][col - 1] == base &&
+                        matrix[row + 2][col - 2] == base &&
+                        matrix[row + 3][col - 3] == base) {
+
+                    if (++sequencesFound >= MIN_MUTANT_SEQUENCES) return true;
+                }
             }
         }
 
@@ -52,49 +82,34 @@ public class MutantDetector {
     }
 
     /**
-     * Verifica si desde (row, col) hay una secuencia válida en la dirección dada.
+     * Valida que el ADN sea no nulo, NxN y contenga solo A/T/C/G.
      */
-    private boolean isSequence(char[][] matrix, int row, int col, int dRow, int dCol, char base) {
-        int n = matrix.length;
+    private boolean validateDna(String[] dna) {
+        if (dna == null || dna.length == 0) return false;
 
-        int endRow = row + (SEQUENCE_LENGTH - 1) * dRow;
-        int endCol = col + (SEQUENCE_LENGTH - 1) * dCol;
+        int n = dna.length;
 
-        // Si no hay espacio suficiente
-        if (endRow < 0 || endRow >= n || endCol < 0 || endCol >= n)
-            return false;
+        for (String row : dna) {
+            if (row == null || row.length() != n) return false;
 
-        for (int i = 1; i < SEQUENCE_LENGTH; i++) {
-            if (matrix[row + i * dRow][col + i * dCol] != base)
-                return false;
+            for (char c : row.toUpperCase().toCharArray()) {
+                if (!VALID_BASES.contains(c)) return false;
+            }
         }
 
         return true;
     }
 
     /**
-     * Valida que el ADN sea no nulo, no vacío, cuadrado NxN y con caracteres válidos.
-     *
-     * @param dna arreglo de cadenas
+     * Convierte el array de Strings en una matriz char[][] optimizada.
      */
-    private boolean validateDna(String[] dna) {
-        if (dna == null || dna.length == 0)
-            return false;
+    private char[][] convertToMatrix(String[] dna, int n) {
+        char[][] matrix = new char[n][n];
 
-        int n = dna.length;
-        for (String row : dna) {
-            if (row == null || row.isEmpty())
-                return false;
-
-            if (row.length() != n)
-                return false;
-
-            for (char c : row.toUpperCase().toCharArray()) {
-                if ("ATCG".indexOf(c) == -1)
-                    return false;
-            }
+        for (int i = 0; i < n; i++) {
+            matrix[i] = dna[i].toUpperCase().toCharArray();
         }
 
-        return true;
+        return matrix;
     }
 }
