@@ -15,9 +15,10 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("Mutant Detector API")
                         .version("1.0.0")
-                        .description("Esta API permite analizar secuencias de ADN para determinar si pertenecen a un mutante o a un humano. \n" +
-                                "                        La verificación se realiza mediante un algoritmo que detecta patrones repetitivos en direcciones \n" +
-                                "                        horizontal, vertical y diagonal dentro de una matriz NxN de caracteres (A, T, C, G).")
+                        .description("""
+                                Esta API permite analizar secuencias de ADN para determinar si pertenecen a un mutante o a un humano.\s
+                                                        La verificación se realiza mediante un algoritmo que detecta patrones repetitivos en direcciones\s
+                                                        horizontal, vertical y diagonal dentro de una matriz NxN de caracteres (A, T, C, G).""")
                         .contact(new Contact().name("Luis Ferreira").email("lferreiraarg@gmail.com"))
                 );
     }

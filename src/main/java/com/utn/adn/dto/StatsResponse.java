@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
         name = "StatsResponse",
         description = """
-            Representa las estadísticas globales procesadas por la API. 
+            Representa las estadísticas globales procesadas por la API.
             Incluye la cantidad total de ADN mutante, ADN humano y el ratio entre ambos.
             """
 )

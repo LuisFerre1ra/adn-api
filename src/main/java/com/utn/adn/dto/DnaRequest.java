@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
         name = "DnaRequest",
         description = """
-            Representa la solicitud enviada al endpoint /mutant. 
-            Contiene una secuencia de ADN expresada como un arreglo de cadenas NxN, 
+            Representa la solicitud enviada al endpoint /mutant.
+            Contiene una secuencia de ADN expresada como un arreglo de cadenas NxN,
             donde cada cadena debe estar compuesta únicamente por los caracteres A, T, C o G.
             """
 )

@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,8 +26,8 @@ import org.springframework.web.bind.annotation.*;
 @Tag(
         name = "Detección de Mutantes",
         description = """
-            Controlador principal de la API de análisis de ADN. 
-            Permite verificar si una secuencia pertenece a un mutante y 
+            Controlador principal de la API de análisis de ADN.
+            Permite verificar si una secuencia pertenece a un mutante y
             consultar estadísticas globales del sistema.
             """
 )
@@ -45,11 +44,11 @@ public class MutantController {
     @Operation(
             summary = "Detecta si un ADN pertenece a un mutante",
             description = """
-                Recibe una matriz NxN de ADN compuesta por los caracteres A, T, C y G. 
-                El servicio analiza la secuencia en direcciones horizontales, verticales y diagonales 
+                Recibe una matriz NxN de ADN compuesta por los caracteres A, T, C y G.
+                El servicio analiza la secuencia en direcciones horizontales, verticales y diagonales
                 para identificar si contiene más de una secuencia mutante.
                 Devuelve:
-                - 200 OK → Si el ADN corresponde a un mutante  
+                - 200 OK → Si el ADN corresponde a un mutante
                 - 403 Forbidden → Si pertenece a un humano
                 """
     )
@@ -86,12 +85,12 @@ public class MutantController {
     @Operation(
             summary = "Obtiene las estadísticas globales",
             description = """
-                Retorna la cantidad de ADN mutante y humano almacenado, junto con el ratio entre ambos.  
+                Retorna la cantidad de ADN mutante y humano almacenado, junto con el ratio entre ambos.
                 Formato esperado:
                 {
-                  \"count_mutant_dna\": 40,
-                  \"count_human_dna\": 100,
-                  \"ratio\": 0.4
+                  "count_mutant_dna": 40,
+                  "count_human_dna": 100,
+                  "ratio": 0.4
                 }
                 """
     )

@@ -44,7 +44,7 @@ public class MutantService {
         }
 
         // No está en BD => analizar
-        boolean isMutant = false;
+        boolean isMutant;
         try {
             isMutant = mutantDetector.isMutant(dna);
         } catch (Exception e) {
