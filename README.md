@@ -9,7 +9,7 @@ Este proyecto es una API REST creada en **Java** utilizando **Spring Boot**, dis
 
 El objetivo principal es analizar una matriz de secuencias de ADN (strings) y buscar patrones específicos (más de una secuencia de 4 letras iguales de forma oblicua, horizontal o vertical).
 
-**🌐 Deploy en producción:** [-]()
+**🌐 Deploy en producción:** [https://adn-api-4jru.onrender.com/api](https://adn-api-4jru.onrender.com/api)
 
 ---
 
