@@ -107,6 +107,8 @@ Envía una secuencia de ADN para verificar si corresponde a un mutante.
 - `403 Forbidden` - Es un humano
 - `400 Bad Request` - ADN inválido
 
+[Diagrama de Secuencia](docs/POST.pdf)
+
 ### 2. Obtener Estadísticas
 
 Obtiene las estadísticas de las verificaciones de ADN realizadas.
@@ -122,6 +124,7 @@ Obtiene las estadísticas de las verificaciones de ADN realizadas.
     "ratio": 0.4
 }
 ```
+[Diagrama de Secuencia](docs/GET.pdf)
 
 ---
 
